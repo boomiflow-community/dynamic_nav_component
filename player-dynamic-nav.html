@@ -1,1 +1,292 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" class="manywho" style="height: 100%;">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+
+    <link rel="shortcut icon" href="https://assets.manywho.com/img/favicon/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="https://assets.manywho.com/img/favicon/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="57x57" href="https://assets.manywho.com/img/favicon/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="https://assets.manywho.com/img/favicon/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="https://assets.manywho.com/img/favicon/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="https://assets.manywho.com/img/favicon/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="https://assets.manywho.com/img/favicon/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="https://assets.manywho.com/img/favicon/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="https://assets.manywho.com/img/favicon/apple-touch-icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="https://assets.manywho.com/img/favicon/apple-touch-icon-180x180.png" />
+    <link rel="icon" sizes="192x192" href="https://assets.manywho.com/img/favicon/android-icon.png">
+    <meta name="msapplication-square310x310logo" content="https://assets.manywho.com/img/favicon/microsoft-310x310.png">
+
+    <title>Boomi Flow</title>
+    <style>
+        .mw-bs .wait-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            min-height: 500px;
+            z-index: 1100;
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .mw-bs .wait-message {
+            position: relative;
+            text-align: center;
+            margin-top: 1em;
+            display: block;
+            top: 40%;
+            font-size: 2em;
+            padding: 0 2em;
+        }
+
+        /* outer */
+        .mw-bs .wait-spinner {
+            display: block;
+            position: relative;
+            left: 50%;
+            width: 150px;
+            height: 150px;
+            margin: 200px 0 0 -75px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: #268AAF;
+            -webkit-animation: spin 2s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
+            animation: spin 2s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
+        }
+
+        /* middle */
+        .mw-bs .wait-spinner:before {
+            content: "";
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: #31B2E2;
+            -webkit-animation: spin 3s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
+              animation: spin 3s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
+        }
+
+        /* inner */
+        .mw-bs .wait-spinner:after {
+            content: "";
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: #154E62;
+            -webkit-animation: spin 1.5s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
+              animation: spin 1.5s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
+        }
+
+        @-webkit-keyframes spin {
+            0%   {
+                -webkit-transform: rotate(0deg);  /* Chrome, Opera 15+, Safari 3.1+ */
+                -ms-transform: rotate(0deg);  /* IE 9 */
+                transform: rotate(0deg);  /* Firefox 16+, IE 10+, Opera */
+            }
+            100% {
+                -webkit-transform: rotate(360deg);  /* Chrome, Opera 15+, Safari 3.1+ */
+                -ms-transform: rotate(360deg);  /* IE 9 */
+                transform: rotate(360deg);  /* Firefox 16+, IE 10+, Opera */
+            }
+        }
+        @keyframes spin {
+            0%   {
+                -webkit-transform: rotate(0deg);  /* Chrome, Opera 15+, Safari 3.1+ */
+                -ms-transform: rotate(0deg);  /* IE 9 */
+                transform: rotate(0deg);  /* Firefox 16+, IE 10+, Opera */
+            }
+            100% {
+                -webkit-transform: rotate(360deg);  /* Chrome, Opera 15+, Safari 3.1+ */
+                -ms-transform: rotate(360deg);  /* IE 9 */
+                transform: rotate(360deg);  /* Firefox 16+, IE 10+, Opera */
+            }
+        }
+    </style>
+</head>
+<body style="height: 100%;">
+    <div id="manywho">
+        <div id="loader" class="mw-bs" style="width: 100%; height: 100%;">
+            <div class="wait-container">
+                <div class="wait-spinner"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://assets.manywho.com/js/vendor/jquery-2.1.4.min.js"></script>
+
+    <script>
+        var manywho = {
+            cdnUrl: 'https://assets.manywho.com',
+            requires: ['core', 'bootstrap3'],
+            initialize: function () {
+
+                var queryParameters = manywho.utils.parseQueryString(window.location.search.substring(1));
+
+                manywho.settings.initialize({
+                    platform: {
+                        uri: '',
+                    },
+                    adminTenantId: 'da497693-4d02-45db-bc08-8ea16d2ccbdf',
+                    playerUrl: [ location.protocol, '//', location.host, location.pathname ].join(''),
+                    joinUrl: [ location.protocol, '//', location.host, location.pathname ].join('')
+                });
+
+                var options = {
+                    authentication: {
+                        sessionId: queryParameters['session-token'],
+                        sessionUrl: queryParameters['session-url']
+                    },
+                    navigationElementId: queryParameters['navigation-element-id'],
+                    mode: queryParameters['mode'],
+                    reportingMode: queryParameters['reporting-mode'],
+                    replaceUrl: true,
+                    collaboration: {
+                        isEnabled: false
+                    },
+                    inputs: null,
+                    annotations: null,
+                    navigation: {
+                        isFixed: true,
+                        isWizard: false
+                    },
+                    callbacks: [],
+                    theme: queryParameters['theme']
+                };
+                
+                // =========================================
+                // Custom nav component
+                //===========================================
+                var tenant =  queryParameters['tenant-id'];
+                (function(manywho) {
+                
+                class NavColumn extends React.Component {
+                        constructor(props) {
+                            super(props);
+                            this.state = manywho.state.getComponent(this.props.id, this.props.flowKey) || {};
+                            this.id = props.id;
+                            this.str = document.location.search;
+                            this.stateId = this.str.replace("?join=", "");
+                            this.str2 = document.location.pathname;
+                            this.tenantId = this.str2.split('/')[1];
+                        }
+                        
+                        
+                        async nav (){
+                            console.log("____________Click____________"); 
+                            console.log("this ==>", this); //Logging
+                            console.log("this.props.contentValue (I.e. element ID to navigate to) ==>", this.props.contentValue); //Logging
+                            
+                            //The custom component will invoke the 'Invoke Flow State' Endpoint. Documentation: https://manywho.github.io/docs-api/#operation/InvokeState
+                            const invokeurl = ("https://flow.manywho.com/api/run/1/state/" + this.stateId);
+                            console.log("invokeurl ==>", invokeurl); //Logging
+                            console.log("Documentation of the 'Invoke Flow State' endpoint: https://manywho.github.io/docs-api/#operation/InvokeState")
+                            
+                            const info = manywho.state.getState(this.props.flowKey);
+                            console.log("info (manywho.state.getState) ==>", info); //Logging
+                            //Define request to be sent to flow invoke state endpoint
+                            const request={};
+                            request.currentMapElementId = info.currentMapElementId;
+                            console.log("request.currentMapElementId ==>", request.currentMapElementId); //Logging
+                            
+                            request.invokeType = 'NAVIGATE';
+                            console.log("request.invokeType ==>", request.invokeType); //Logging
+                            
+                            request.mapElementInvokeRequest = {};
+                            request.mapElementInvokeRequest.selectedOutcomeId = null;
+                            console.log("request.mapElementInvokeRequest ==>", request.mapElementInvokeRequest); //Logging
+                            console.log("request.mapElementInvokeRequest.selectedOutcomeId ==>", request.mapElementInvokeRequest.selectedOutcomeId); //Logging
+                            
+                            request.pageRequest = {
+                                pageComponentInputResponses: [
+                                    { pageComponentId: this.props.id, contentValue: null, objectData: null},
+                                ],
+                            };
+                            console.log("request.pageRequest ==>",request.pageRequest); //Logging
+                            console.log("this.props.id ==>", this.props.id); //Logging
+                            
+                            request.selectedMapElementId = this.props.contentValue;
+                            console.log("request.selectedMapElementId ==>", request.selectedMapElementId); //Logging
+                            
+                            request.stateId = this.stateId;
+                            console.log("request.stateId ==>", request.stateId); //Logging
+                            
+                            request.stateToken = info.token;
+                            console.log("request.stateToken ==>", request.stateToken); //Logging
+                            console.log("Navigating to map element ID (this.props.contentValue / request.props.contentValue) ==>", this.props.contentValue); //Logging
+                            
+                            // console.log(JSON.stringify(request)); //Logging
+                            console.log("this.tenantId ==>", this.tenantId)
+                            //Execute the call to the 'Invoke Flow State' endpoint
+                            console.log("Call 'Invoke Flow State' endpoint...");
+                            const resp = await manywho.connection.request(this, null, invokeurl , 'POST',  this.tenantId, this.stateId, manywho.state.getAuthenticationToken(this.flowKey), request);
+                            
+                            console.log("this.props.flowKey ==>", this.props.flowKey); //Logging
+                            manywho.model.parseEngineResponse(resp, this.props.flowKey);
+                            await manywho.engine.sync(this.props.flowKey);
+                            console.log("Sync with current flow state..."); //Logging
+                            
+                            await manywho.engine.render(this.props.flowKey);
+                            console.log("Re-render including current outcome buttons..."); //Logging
+                        }
+                        
+                        componentDidMount() {
+                        }
+                        
+                         render() {
+                            return React.createElement('btn', {
+                                    className: "btn btn-primary",
+                                    onClick: this.nav.bind(this)
+                                },
+                                ("Navigate to this step - ID: " + this.props.contentValue),
+                            
+                            );
+                
+                        }
+                    }
+                manywho.component.register('nav-column', NavColumn);
+                }(manywho));
+                
+                // End custom nav component
+                
+                //Disable small table conversion
+                manywho.component.register('mw-table-small', manywho.component.getByName('mw-table-large'));
+                
+
+                var tenantId = queryParameters['tenant-id'];
+                if (!tenantId) {
+                    tenantId =
+                        window.location.pathname
+                        .split('/')
+                        .filter(function (path) {
+                            return path && path.length > 0;
+                        })[0];
+                }
+
+                manywho.engine.initialize(
+                    tenantId,
+                    queryParameters['flow-id'],
+                    queryParameters['flow-version-id'],
+                    'main',
+                    queryParameters['join'],
+                    queryParameters['authorization'],
+                    options,
+                    queryParameters['initialization']
+                );
+
+            }
+        };
+    </script>
+
+    <script src="https://assets.manywho.com/js/loader.min.js"></script>
+</body>
+</html>
 
